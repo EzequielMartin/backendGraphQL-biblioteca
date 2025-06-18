@@ -98,14 +98,31 @@ let books = [
 */
 
 const typeDefs = `
+  type Book {
+    title: String!
+    author: String!
+    published: Int!
+    genres: [String!]!
+  }
+
   type Query {
-    dummy: Int
+    bookCount: Int!
+    authorCount: Int!
+    allBooks: [Book]!
   }
 `;
 
 const resolvers = {
   Query: {
-    dummy: () => 0,
+    bookCount: () => books.length,
+    authorCount: () => {
+      //Uso un Set, que es una estructura de datos que elimina los duplicados automaticamente. En este Set guardo los autores de los libros
+      //Luego calculo cuantos elementos contiene usando la funcion size
+      const uniqueAuthors = new Set(books.map((books) => books.author));
+      const cantAuthors = uniqueAuthors.size;
+      return cantAuthors;
+    },
+    allBooks: () => books,
   },
 };
 
