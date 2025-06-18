@@ -27,20 +27,6 @@ let authors = [
   },
 ];
 
-/*
- * Suomi:
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
- *
- * English:
- * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
- * However, for simplicity, we will store the author's name in connection with the book
- *
- * Spanish:
- * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
- * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conexión con el libro
- */
-
 let books = [
   {
     title: "Clean Code",
@@ -93,10 +79,6 @@ let books = [
   },
 ];
 
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
-
 const typeDefs = `
   type Book {
     title: String!
@@ -115,13 +97,17 @@ const typeDefs = `
 const resolvers = {
   Query: {
     bookCount: () => books.length,
-    authorCount: () => {
-      //Uso un Set, que es una estructura de datos que elimina los duplicados automaticamente. En este Set guardo los autores de los libros
-      //Luego calculo cuantos elementos contiene usando la funcion size
-      const uniqueAuthors = new Set(books.map((books) => books.author));
-      const cantAuthors = uniqueAuthors.size;
-      return cantAuthors;
-    },
+    authorCount: () => authors.length,
+
+    //Esto es para obtener la cant individual de autores usando la lista de libros
+    // authorCount: () => {
+    //   //Uso un Set, que es una estructura de datos que elimina los duplicados automaticamente. En este Set guardo los autores de los libros
+    //   //Luego calculo cuantos elementos contiene usando la funcion size
+    //   const uniqueAuthors = new Set(books.map((books) => books.author));
+    //   const cantAuthors = uniqueAuthors.size;
+    //   return cantAuthors;
+    // },
+
     allBooks: (root, args) => {
       //Si no paso un autor como parametro retorno todos los libros, si paso un autor como parametro filtro solo los libros de ese autor
       if (!args.author) {
