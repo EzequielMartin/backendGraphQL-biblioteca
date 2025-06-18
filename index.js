@@ -108,7 +108,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Book]!
+    allBooks(author: String): [Book]!
   }
 `;
 
@@ -122,7 +122,14 @@ const resolvers = {
       const cantAuthors = uniqueAuthors.size;
       return cantAuthors;
     },
-    allBooks: () => books,
+    allBooks: (root, args) => {
+      //Si no paso un autor como parametro retorno todos los libros, si paso un autor como parametro filtro solo los libros de ese autor
+      if (!args.author) {
+        return books;
+      } else {
+        return books.filter((p) => p.author === args.author);
+      }
+    },
   },
 };
 
