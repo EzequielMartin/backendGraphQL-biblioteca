@@ -147,14 +147,21 @@ const resolvers = {
       //Creo un array con los nombres de los autores una unica vez
       const autoresUnicos = [...new Set(books.map((book) => book.author))];
 
-      //Genero la respuesta con los nombres y cant de libros de cada autor
+      //Genero la respuesta para cada autor del array
       return autoresUnicos.map((author) => {
+        //Calculo la cantidad de libros que tiene este autor particular
         const cantidadLibros = books.filter(
           (book) => book.author === author
         ).length;
+
+        //Obtengo el año de nacimiento de este autor particular
+        const anioNacimiento = authors.find((a) => a.name === author).born;
+
+        //Retorno los datos de este autor particular
         return {
           name: author,
           bookCount: cantidadLibros,
+          born: anioNacimiento,
         };
       });
     },
