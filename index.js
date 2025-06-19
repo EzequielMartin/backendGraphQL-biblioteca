@@ -89,10 +89,17 @@ const typeDefs = `
     genres: [String!]!
   }
 
+  type Author {
+    name: String!
+    born: Int
+    bookCount: Int
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
+    allAuthors: [Author!]!
   }
 
   type Mutation {
@@ -136,6 +143,7 @@ const resolvers = {
         );
       }
     },
+    allAuthors: () => authors,
   },
   Mutation: {
     addBook: (root, args) => {
