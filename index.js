@@ -143,7 +143,21 @@ const resolvers = {
         );
       }
     },
-    allAuthors: () => authors,
+    allAuthors: () => {
+      //Creo un array con los nombres de los autores una unica vez
+      const autoresUnicos = [...new Set(books.map((book) => book.author))];
+
+      //Genero la respuesta con los nombres y cant de libros de cada autor
+      return autoresUnicos.map((author) => {
+        const cantidadLibros = books.filter(
+          (book) => book.author === author
+        ).length;
+        return {
+          name: author,
+          bookCount: cantidadLibros,
+        };
+      });
+    },
   },
   Mutation: {
     addBook: (root, args) => {
