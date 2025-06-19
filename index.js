@@ -90,7 +90,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String): [Book]!
+    allBooks(author: String, genre: String): [Book]!
   }
 `;
 
@@ -109,11 +109,20 @@ const resolvers = {
     // },
 
     allBooks: (root, args) => {
-      //Si no paso un autor como parametro retorno todos los libros, si paso un autor como parametro filtro solo los libros de ese autor
-      if (!args.author) {
+      if (!args.author && !args.genre) {
+        //Si no paso un autor ni un genero como parametro retorno todos los libros
         return books;
-      } else {
-        return books.filter((p) => p.author === args.author);
+      } else if (args.author && !args.genre) {
+        //Si paso un autor pero no un genero retorno los libros de ese autor
+        return books.filter((b) => b.author === args.author);
+      } else if (!args.author && args.genre) {
+        //Si paso un genero pero no un autor retorno los libros de ese genero
+        return books.filter((b) => b.genres.includes(args.genre));
+      } else if (args.author && args.genre) {
+        //Si paso ambos parametros retorno los libros de ese autor y ese genero
+        return books.filter(
+          (b) => b.author === args.author && b.genres.includes(args.genre)
+        );
       }
     },
   },
